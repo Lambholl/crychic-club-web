@@ -49,7 +49,9 @@ onBeforeUnmount(() => {
       <el-image src="/imgs/home/main.webp" class="poster" alt="乐队养的耄耋" />
     </div>
     <h1 class="title">欢迎来到 Crychic 乐队</h1>
-    <el-button class="explore-button" :round="button.round" :color="button.color">咕咕嘎咕</el-button>
+    <a href="https://github.com/Lambholl/crychic-club-web" target="_blank">
+      <el-button class="explore-button" :round="button.round" :color="button.color">咕咕嘎咕</el-button>
+    </a>
   </div>
 </template>
 
