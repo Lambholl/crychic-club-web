@@ -1,24 +1,63 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 const button = {
-  type: 'primary',
-  color: '#e65c50',
+  type: 'warning',
+  color: '#fcd34d',
   round: true,
 }
+
+const parallaxRef = ref<HTMLElement | null>(null)
+const maxRotate = 3
+
+function handleParallaxMouseMove(e: MouseEvent) {
+  const el = parallaxRef.value
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  const centerX = rect.width / 2
+  const centerY = rect.height / 2
+  const offsetX = e.clientX - rect.left
+  const offsetY = e.clientY - rect.top
+  const rotateX = (maxRotate * (offsetY - centerY)) / centerY * -1
+  const rotateY = (maxRotate * (offsetX - centerX)) / centerX
+  el.style.setProperty('--rotateX', rotateX.toString())
+  el.style.setProperty('--rotateY', rotateY.toString())
+}
+function handleParallaxMouseLeave() {
+  const el = parallaxRef.value
+  if (!el) return
+  el.style.setProperty('--rotateX', '0')
+  el.style.setProperty('--rotateY', '0')
+}
+
+onMounted(() => {
+  handleParallaxMouseLeave()
+})
+onBeforeUnmount(() => {
+  handleParallaxMouseLeave()
+})
 </script>
 
 <template>
   <div class="home-container">
-    <img src="/imgs/home/main.webp" class="poster" alt="要乐奈" />
-    <h1 class="title">欢迎来到 MyGO FanSite</h1>
-    <p class="description">探索 MyGO 和 Ave Mujica 的精彩剧情，感受音乐的魅力！</p>
-    <el-button class="explore-button" :round="button.round" :color="button.color">了解更多</el-button>
+    <div
+      class="poster-parallax"
+      ref="parallaxRef"
+      @mousemove="handleParallaxMouseMove"
+      @mouseleave="handleParallaxMouseLeave"
+      style="--rotateX:0;--rotateY:0;--maxRotate:15;"
+    >
+      <el-image src="/imgs/home/main.webp" class="poster" alt="乐队养的耄耋" />
+    </div>
+    <h1 class="title">欢迎来到 Crychic 乐队</h1>
+    <el-button class="explore-button" :round="button.round" :color="button.color">咕咕嘎咕</el-button>
   </div>
 </template>
 
 <style>
 .home-container {
-  width: 100%;
   display: flex;
+  width: 100%;
+  max-width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -28,11 +67,26 @@ const button = {
   padding: 20px;
 }
 
+.poster-parallax {
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 631/383;
+  max-width: 80vw;
+  max-height: 80vh;
+  margin-bottom: 24px;
+}
+
 .poster {
-  width: 80%;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 2s ease-in-out;
+  transition: transform 0.3s cubic-bezier(.25,.8,.25,1), box-shadow 0.2s;
+  will-change: transform;
+  width: 100%;
+  height: 100%;
+  /* 3D 旋转 */
+  transform: rotateX(calc(var(--rotateX, 0) * 1deg)) rotateY(calc(var(--rotateY, 0) * 1deg));
 }
 
 .title {
