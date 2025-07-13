@@ -50,7 +50,7 @@ onBeforeUnmount(() => {
     </div>
     <h1 class="title">欢迎来到 Crychic 乐队</h1>
     <a href="https://github.com/Lambholl/crychic-club-web" target="_blank">
-      <el-button class="explore-button" :round="button.round" :color="button.color">咕咕嘎咕</el-button>
+      <el-button class="explore-button" :round="button.round" :color="button.color">咕咕嘎嘎</el-button>
     </a>
   </div>
 </template>
