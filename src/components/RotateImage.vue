@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 function handleParallaxMouseMove(e: MouseEvent) {
-  console.log(props);
+  // console.log(props);
   const el = parallaxRef.value;
   if (!el) {return};
   const rect = el.getBoundingClientRect();
